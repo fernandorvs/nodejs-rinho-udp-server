@@ -1,5 +1,17 @@
 exports.listDevice = {};
-
+exports.updateDeviceList = function(data, rinfo) {
+    if (this.listDevice[data.deviceId] === undefined) {
+        this.listDevice[data.deviceId] = { 
+            'deviceId': data.deviceId,
+            address: rinfo.address, port: rinfo.port, 
+            tick: (new Date()).getTime(), commands: [] 
+        };
+    } else {
+        this.listDevice[data.deviceId].address = rinfo.address;
+        this.listDevice[data.deviceId].port = rinfo.port;
+        this.listDevice[data.deviceId].tick = (new Date()).getTime();
+    }
+}
 exports.calculateChecksum = function (cmd) {
 	var checksum = 0;
 	for(var i = 0; i < cmd.length; i++) {
@@ -11,7 +23,6 @@ exports.calculateChecksum = function (cmd) {
 	}
 	return hexsum;
 }
-
 exports.parserMessage = function(message) {
 	var output = [];	
 	var re = />(.*?)(;#([\w]{4})|)?;ID=([\w]*)(;|)/gm;
@@ -29,7 +40,6 @@ exports.parserMessage = function(message) {
 	}
 	return output;
 }
-
 exports.parserCQ = function(message) {
 	var output = [];
 	var reb = />RCQ([\w]{2})([\d]{2})([\d]{2})([\d]{2})([\d]{2})([\d]{2})([\d]{2})([+-]{1}[\d]{7})([+-]{1}[\d]{8})([\d]{3})([\d]{3})([\w]{2})([\w]{2})([\d]{3})([\w]{8})([\w]{1})([\w]{1})([\d]{2})([\d]{2})([\w]{4})([\d]{1})([\w]{1})([\w]{2})(;TXT=([\w\s]*)|)(;#([\w]{4})|)?;ID=([\w]*)(;|)/gm;
