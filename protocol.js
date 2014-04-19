@@ -2,17 +2,17 @@
 exports.listDevice = {};
 
 exports.updateDeviceList = function(data, rinfo) {
-    if (this.listDevice[data.deviceId] === undefined) {
-        this.listDevice[data.deviceId] = { 
-            'deviceId': data.deviceId,
-            address: rinfo.address, port: rinfo.port, 
-            tick: (new Date()).getTime(), commands: [] 
-        };
-    } else {
-        this.listDevice[data.deviceId].address = rinfo.address;
-        this.listDevice[data.deviceId].port = rinfo.port;
-        this.listDevice[data.deviceId].tick = (new Date()).getTime();
-    }
+	if (this.listDevice[data.deviceId] === undefined) {
+		this.listDevice[data.deviceId] = { 
+			'deviceId': data.deviceId,
+			address: rinfo.address, port: rinfo.port, 
+			tick: (new Date()).getTime(), commands: [] 
+		};
+	} else {
+		this.listDevice[data.deviceId].address = rinfo.address;
+		this.listDevice[data.deviceId].port = rinfo.port;
+		this.listDevice[data.deviceId].tick = (new Date()).getTime();
+	}
 }
 
 exports.calculateChecksum = function (cmd) {
@@ -31,10 +31,10 @@ exports.parserMessage = function(message) {
 	var output = [];	
 	var re = />(.*?)(;#([\w]{4})|)?;ID=([\w]*)(;|)/gm;
 	var m; while ((m = re.exec(message)) != null) {
-	    if (m.index === re.lastIndex) re.lastIndex++;
+		if (m.index === re.lastIndex) re.lastIndex++;
 		var msgNum = null, IDDevice = null, body;
-	    if (m[3]) msgNum = m[3];
-	    if (m[4]) deviceId = m[4];
+		if (m[3]) msgNum = m[3];
+		if (m[4]) deviceId = m[4];
 		if (m[1]) body = m[1];
 		var data = { 
 			body: body, deviceId: deviceId, 
