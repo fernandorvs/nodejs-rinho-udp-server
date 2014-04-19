@@ -1,4 +1,5 @@
 
+// Get Date Time
 exports.getDateTime = function () {
 	var now = new Date();
 	var year = now.getFullYear();
@@ -16,6 +17,7 @@ exports.getDateTime = function () {
 	return dateTime;
 }
 
+// Muttable Console Log
 exports.log = function(message, type, muttable) {
 	if (!muttable) console.log(this.getDateTime() + " " + message);
 }

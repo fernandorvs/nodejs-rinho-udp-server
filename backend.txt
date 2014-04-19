@@ -1,0 +1,7 @@
+
+// >SIP0190.31.152.81/5000< >SIP1190.31.152.81/5000<
+/*setInterval(function() {
+	network.sendMessage(">RCQ00140114020454-3282041-060841740001057F022410364673E13011100011017;#6541;ID=CS009;*4E<", "localhost", 5000);
+}, 2000);*/
+
+http://greenido.wordpress.com/2013/08/27/debug-nodejs-like-a-pro/

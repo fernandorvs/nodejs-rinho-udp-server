@@ -9,8 +9,8 @@ var db = require("./db.js");
 var dgram = require("dgram");
 var server = dgram.createSocket("udp4");
 server.on("error", function (err) {
-  util.log("UDP Server ERROR" + err.stack);
-  server.close();
+    util.log("UDP Server ERROR" + err.stack);
+    server.close();
 });
 
 // On UDP Listening
@@ -21,23 +21,23 @@ server.on("listening", function () {
 
 // On UDP Message
 server.on("message", function (msg, rinfo) {
-	util.log(rinfo.address + ":" + rinfo.port + " -> " + msg);
-	protocol.parserMessage(msg).forEach(function(packet) {
+    util.log(rinfo.address + ":" + rinfo.port + " -> " + msg);
+    protocol.parserMessage(msg).forEach(function(packet) {
         var msgNum = packet['msgNum'], deviceId = packet['deviceId'];
         protocol.updateDeviceList(packet, rinfo);
-		var cqs = protocol.parserCQ(packet['sourcePacket']);
-		cqs.forEach(function(data){
-			var sqlString = db.prepareInsert(data, "tracks");
-			db.connection.query(sqlString, function(err, rows, fields) {
-				if (err) util.log("ERROR DB, " + err['code']); else {
+        var cqs = protocol.parserCQ(packet['sourcePacket']);
+        cqs.forEach(function(data){
+            var sqlString = db.prepareInsert(data, "tracks");
+            db.connection.query(sqlString, function(err, rows, fields) {
+                if (err) util.log("ERROR DB, " + err['code']); else {
                     if (msgNum && deviceId) {
-					  network.sendAck(msgNum, deviceId, rinfo);
+                        network.sendAck(msgNum, deviceId, rinfo);
                     }
-				}
-			});
+                }
+            });
         });
         var msgNumDec = parseInt(msgNum, 16);
-		if (cqs.length == 0 && (msgNum && deviceId && msgNumDec < 0x8000)) {
+        if (cqs.length == 0 && (msgNum && deviceId && msgNumDec < 0x8000)) {
             network.sendAck(msgNum, deviceId, rinfo);
         }
         if (msgNumDec >= 0x8000) {
@@ -45,7 +45,7 @@ server.on("message", function (msg, rinfo) {
             device.commands.forEach(function(command){
                 for (var i = 0; i<device.commands.length; i++) {
                     if (device.commands[i].msgNum == msgNumDec) {
-                        var sqlString = "update actions set status = 0, response = '" +
+                        var sqlString = "update actions set status = 0, modifiedAt = now(), response = '" +
                             packet.sourcePacket + "' where id = '" +
                             device.commands[i].id + "' limit 1";
                         device.commands.splice(i, 1);
@@ -56,7 +56,7 @@ server.on("message", function (msg, rinfo) {
                 }                
             })
         }
-	});	
+    }); 
 });
 
 // Load devices' commands from Mysql to Ram
