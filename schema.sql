@@ -15,7 +15,6 @@ CREATE TABLE `actions` (
 	`cmd` varchar(200) DEFAULT NULL,
 	`response` varchar(200) DEFAULT NULL,
 	`status` tinyint(4) DEFAULT '0',
-	`reint` tinyint(4) DEFAULT '5',
 	`createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	`modifiedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),

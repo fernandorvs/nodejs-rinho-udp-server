@@ -8,10 +8,10 @@ exports.connection = null;
 exports.init = function() {
 	var callback = this;
 	function kickWatchDog() {
-		this.connection.end();
+		try { this.connection.end(); } catch(e) {}
 		setTimeout(function () { require('./db.js').init(); }, 5000);
 	}
-	util.log("DB INIT, Inicializa DB");
+	util.log("DB INIT, Starting DB");
 	var mysql = require('mysql');
 	this.connection = mysql.createConnection({
 		host     : 'localhost',
@@ -20,7 +20,7 @@ exports.init = function() {
 		database : 'rinhonode'
 	});
 	this.connection.on('error', function(err) {
-		util.log("DB ERROR, DB Disconected DB!");
+		util.log("DB ERROR, Disconected DB!");
 		util.log("DB ERROR, " + err);
 		kickWatchDog();
 	});
