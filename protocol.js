@@ -57,7 +57,7 @@ exports.parserCQ = function(message) {
 			reportType:         "CQ",
 			reportId:           x[01],
 			gpsDateTime:        null,
-			reportDateTime:     dateFormat(reportDateTime, "yyyy-mm-dd hh:MM:ss"),
+			reportDateTime:     dateFormat(reportDateTime, "yyyy-mm-dd HH:MM:ss"),
 			latitude:           x[08]/100000,
 			longitude:          x[09]/100000, 
 			speed:              parseInt(x[10]),
